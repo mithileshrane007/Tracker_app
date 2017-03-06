@@ -1,0 +1,28 @@
+development:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: tracker
+  pool: 5
+  username: root
+  password: infiny321
+  # **socket: /opt/local/var/run/mysql5/mysqld.sock**
+test:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: tracker
+  pool: 5
+  username: root
+  password: infiny321
+  # socket: **/opt/local/var/run/mysql5/mysqld.sock**
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: tracker
+  pool: 5
+  username: root
+  password: infiny321
+  # socket: **/opt/local/var/run/mysql5/mysqld.sock**
