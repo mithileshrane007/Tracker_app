@@ -12,9 +12,9 @@ class Api::V1::UsersController < ApplicationController
 					user.save
 	                puts  user.errors.inspect
 					if user.save
-	                    render json: {error: 'false' , msg: 'Created Successfully'}
+	                   render json: user 
 	                else
-	                    render json: {error: 'true' , msg: 'process not completed'}
+	                   render json: {error: 'true' , msg: 'process not completed'}
 	                end
 				else
 					data1['error'] = '1002'
