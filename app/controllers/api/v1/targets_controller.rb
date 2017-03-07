@@ -7,6 +7,7 @@ class Api::V1::TargetsController < ApplicationController
 	     	last_name = params[:last_name]
 	     	phone_no = params[:phone_no]
 	     	random =rand.to_s[2..9]
+	     	
 	     	data1 ={}
 	     	if first_name.present? && last_name.present?  && phone_no.present? 
 	     		target = Target.new(first_name: first_name, last_name: last_name, phone_no: phone_no,tracking_id: random,user_id: session[:user_id])
@@ -63,10 +64,10 @@ class Api::V1::TargetsController < ApplicationController
  	    end
 
  	    def show
- 	    	
+ 	    	    tracking_id = params[:tracking_id]
  	    		user = session[:user_id]
  	    		puts user
- 	    		target = Target.where(:user_id => user)
+ 	    		target = Target.where(:user_id => user, tracking_id: tracking_id)
  	    			puts target
  	    			if not target.blank?
  	    				@target1 =[]
