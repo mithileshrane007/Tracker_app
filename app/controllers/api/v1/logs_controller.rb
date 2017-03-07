@@ -68,7 +68,7 @@ class Api::V1::LogsController < ApplicationController
 						x=0
  	    				for i in log
 							data1 ={}
-							
+							data1[created_at]= i.created_at
 						@log1.push(data1)
 				        x=x+1
 				      	end

@@ -7,6 +7,7 @@ class Api::V1::UsersController < ApplicationController
 	        data1 ={}
 	        o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
       	    random = (0...50).map { o[rand(o.length)] }.join
+      	    
 		       	if email.present? && password.present? && phone_no.present? 
 					user= User.new(email: email,password: password,phone_no: phone_no,organisation_name: organisation_name,auth_token: random)
 					user.save
