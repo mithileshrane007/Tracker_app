@@ -15,7 +15,7 @@ test:
   database: tracker
   pool: 5
   username: root
-  password: infiny2!@#
+  password: infiny2!@# 
   # socket: **/opt/local/var/run/mysql5/mysqld.sock**
 
 production:

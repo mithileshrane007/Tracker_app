@@ -112,7 +112,10 @@ class Api::V1::TargetsController < ApplicationController
  	    end
 
  	    def destroy
- 	    	@target = Target.where(id: params[:id], user_id: session[:user_id]).first
+ 	    	token = request.headers["token"]
+    		id = params[:id]
+    		user = User.find_by_auth_token(token).id
+ 	    	@target = Target.where(id: id, user_id: user).first
 
  	    	puts "/////////////////////////////////"
  	    	puts @target
