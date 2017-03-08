@@ -10,11 +10,13 @@ class Api::V1::TargetsController < ApplicationController
 	     	last_name = params[:last_name]
 	     	phone_no = params[:phone_no]
 	     	email = params[:email]
+	     	track_time_interval = params[:track_time_interval]
+	     	track_time_out = params[:track_time_out]
 	     	random =rand.to_s[2..9]
 
 	     	data ={}
 	     	if first_name.present? && last_name.present?  && phone_no.present? && email.present?
-	     		target = Target.new(first_name: first_name, last_name: last_name, phone_no: phone_no,email: email,tracking_id: random,user_id: user)
+	     		target = Target.new(first_name: first_name, last_name: last_name, phone_no: phone_no,email: email,tracking_id: random,user_id: user,track_time_interval: track_time_interval,track_time_out: track_time_out)
 	     		    
  		    	if not params[:image].blank?
 				  StringIO.open(Base64.decode64(params[:image])) do |data|
