@@ -3,8 +3,9 @@ namespace :api do
         namespace :v1 do
 
             post 'create_users', to: 'users#create'
-            post 'users/show', to: 'users#show'
-            post 'users/update', to: 'users#update'
+            post 'users_show', to: 'users#show'
+            post 'users_update', to: 'users#update'
+            post 'users_delete', to: 'users#destroy'
             post 'targets/show', to: 'targets#show'
             post 'logs/show', to: 'logs#show'
             post 'logs/tracking', to: 'logs#tracking'

@@ -57,7 +57,10 @@ class Api::V1::UsersController < ApplicationController
 
  	    def update
     		begin
- 	    		user =User.find(params[:user_id])
+ 	    		token = request.headers["token"]
+	                puts "88888888888//////////////888888888888888888"
+	                puts token
+	                user = User.find_by_auth_token(token)
  	    		user.email = params[:email]
  	    		user.password_digest = params[:password]
  	    		user.phone_no = params[:phone_no]
@@ -77,8 +80,11 @@ class Api::V1::UsersController < ApplicationController
  	    end
 
  	    def destroy
-        	@user = User.where(id: params[:id]).first
-	        if @user.destroy
+        	
+        	user_id = params[:user_id]
+	        user = User.find(user_id)
+	                
+	        if user.destroy
 	            render json: {error: 'false', status: 'successful'}
 	        else
 	            render json: {error: 'true', msg: 'process not completed'}
