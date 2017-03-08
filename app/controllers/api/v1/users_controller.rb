@@ -19,6 +19,7 @@ class Api::V1::UsersController < ApplicationController
 							data['result']['email'] = user.email
 							data['result']['phone_no'] = user.phone_no
 							data['result']['organisation_name'] = user.organisation_name
+							data['result']['auth_token'] = user.auth_token
 					else
 						data ={}
 						data['error'] = '1002'

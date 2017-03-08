@@ -75,10 +75,10 @@ class Api::V1::TargetsController < ApplicationController
  	    end
 
  	    def show
- 	    	    
+ 	    	    token = request.headers["token"]
  	    		tracking_id = params[:tracking_id]
- 	    		
- 	    		target = Target.where(tracking_id: tracking_id)
+ 	    		user = User.find_by_auth_token(token).id
+ 	    		target = Target.where(user_id: user,tracking_id: tracking_id)
  	    		
  	    			puts target
 
