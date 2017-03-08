@@ -1,17 +1,20 @@
 class Api::V1::TargetsController < ApplicationController
 
-	
-    
-        def create
-	     	first_name = params[:first_name]
+	def create
+		begin
+			token = request.headers["token"]
+	        user = User.find_by_auth_token(token).id
+	        puts "**********9999999999999********************"
+	        puts user
+			first_name = params[:first_name]
 	     	last_name = params[:last_name]
 	     	phone_no = params[:phone_no]
 	     	email = params[:email]
 	     	random =rand.to_s[2..9]
 
-	     	data1 ={}
+	     	data ={}
 	     	if first_name.present? && last_name.present?  && phone_no.present? && email.present?
-	     		target = Target.new(first_name: first_name, last_name: last_name, phone_no: phone_no,email: email,tracking_id: random,user_id: session[:user_id])
+	     		target = Target.new(first_name: first_name, last_name: last_name, phone_no: phone_no,email: email,tracking_id: random,user_id: user)
 	     		    
  		    	if not params[:image].blank?
 				  StringIO.open(Base64.decode64(params[:image])) do |data|
@@ -24,27 +27,30 @@ class Api::V1::TargetsController < ApplicationController
                 
                 target.save
                 # UserMailer.welcome_email(email, random).deliver_now
-              	puts "99999999999999999999999999999999999999"
-              	puts  target.errors.inspect
+              	data ={}
+				data['error'] = 'false'
+		        data['msg'] = 'success'
 
-                if target.save
-                   render json: {error: 'false' , msg: 'Created Successfully'}
-                else
-                   render json: {error: 'true' , msg: 'process not completed'}
-                end
 	        else
-	       		data1['error'] = '1002'
-		       	data1['msg'] = 'Entry unsuccessful.Blank Params.'
+	       		data['error'] = '1002'
+		       	data['msg'] = 'Entry unsuccessful.Blank Params.'
+		    end
+		rescue Exception => e
+			    data['error'] = '1002'
+		       	data['msg'] = 'Entry unsuccessful.Blank Params.'
+		end
+	     	
                 	respond_to do |format|
-                		format.json { render json: data1 }
+                		format.json { render json: data }
                 	end
-	        end
-
-        end
+    end
 
         def update
     		begin
-	    		target = Target.where(id: params[:id], user_id: session[:user_id]).first
+    			token = request.headers["token"]
+    			id = params[:id]
+	        	user = User.find_by_auth_token(token).id
+	    		target = Target.where(id: id, user_id: user).first
 
 	    		puts "99955555222222222222222222222222"
 	    		puts target

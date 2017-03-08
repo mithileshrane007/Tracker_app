@@ -6,7 +6,9 @@ namespace :api do
             post 'users_show', to: 'users#show'
             post 'users_update', to: 'users#update'
             post 'users_delete', to: 'users#destroy'
-            post 'targets/show', to: 'targets#show'
+            post 'create_targets', to: 'targets#create'
+            post 'targets_show', to: 'targets#show'
+            post 'targets_update', to: 'targets#update'
             post 'logs/show', to: 'logs#show'
             post 'logs/tracking', to: 'logs#tracking'
             resources :targets

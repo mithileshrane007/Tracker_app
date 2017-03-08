@@ -1,29 +1,38 @@
 class Api::V1::UsersController < ApplicationController
 		def create
-			email    = params[:email]
-			password = params[:password]
-			phone_no = params[:phone_no]
-			organisation_name= params[:organisation_name]
-	        data1 ={}
-	        o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
-      	    random = (0...50).map { o[rand(o.length)] }.join
+			begin
+				email    = params[:email]
+				password = params[:password]
+				phone_no = params[:phone_no]
+				organisation_name= params[:organisation_name]
+		        data1 ={}
+		        o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+	      	    random = (0...50).map { o[rand(o.length)] }.join
 
-		       	if email.present? && password.present? && phone_no.present? 
-					user= User.new(email: email,password: password,phone_no: phone_no,organisation_name: organisation_name,auth_token: random)
-					user.save
-	                puts  user.errors.inspect
-					if user.save
-	                   render json: user 
-	                else
-	                   render json: {error: 'true' , msg: 'process not completed'}
-	                end
-				else
-					data1['error'] = '1002'
-	            	data1['msg'] = 'Entry unsuccessful.Blank Params.'
-	                respond_to do |format|
-	                    format.json { render json: data1 }
-				    end
-				end
+			       	if email.present? && password.present? && phone_no.present? 
+						user= User.new(email: email,password: password,phone_no: phone_no,organisation_name: organisation_name,auth_token: random)
+							user.save
+							data ={}
+							data['error'] = 'false'
+		            		data['msg'] = 'success'
+							data['result'] = {}
+							data['result']['email'] = user.email
+							data['result']['phone_no'] = user.phone_no
+							data['result']['organisation_name'] = user.organisation_name
+					else
+						data ={}
+						data['error'] = '1002'
+		            	data['msg'] = 'Entry unsuccessful.Blank Params.'
+		            end
+			rescue Exception => e
+					data ={}
+					data['error'] = '1003'
+		            data['msg'] = 'something went wrong'
+			end	
+					respond_to do |format|
+		                format.json { render json: data }
+					    end
+					
  		end
 
  		def show
