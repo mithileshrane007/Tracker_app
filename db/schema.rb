@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307063947) do
+ActiveRecord::Schema.define(version: 20170308061443) do
 
   create_table "checkouts", force: :cascade do |t|
     t.integer  "target_id",   limit: 4
@@ -29,18 +29,21 @@ ActiveRecord::Schema.define(version: 20170307063947) do
   end
 
   create_table "targets", force: :cascade do |t|
-    t.string   "first_name",         limit: 255
-    t.string   "last_name",          limit: 255
-    t.string   "tracking_id",        limit: 255
-    t.integer  "user_id",            limit: 4
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.string   "image",              limit: 255
-    t.integer  "phone_no",           limit: 8
-    t.string   "image_file_name",    limit: 255
-    t.string   "image_content_type", limit: 255
-    t.integer  "image_file_size",    limit: 4
+    t.string   "first_name",          limit: 255
+    t.string   "last_name",           limit: 255
+    t.string   "tracking_id",         limit: 255
+    t.integer  "user_id",             limit: 4
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "image_file_name",     limit: 255
+    t.string   "image_content_type",  limit: 255
+    t.integer  "image_file_size",     limit: 4
     t.datetime "image_updated_at"
+    t.string   "image",               limit: 255
+    t.integer  "phone_no",            limit: 8
+    t.string   "email",               limit: 255
+    t.string   "track_time_interval", limit: 255
+    t.string   "track_time_out",      limit: 255
   end
 
   create_table "users", force: :cascade do |t|

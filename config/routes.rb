@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 namespace :api do
         namespace :v1 do
 
-            post 'users/create', to: 'users#create'
+            post 'create_users', to: 'users#create'
             post 'users/show', to: 'users#show'
             post 'users/update', to: 'users#update'
             post 'targets/show', to: 'targets#show'

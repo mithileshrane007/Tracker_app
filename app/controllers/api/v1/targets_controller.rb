@@ -1,16 +1,17 @@
 class Api::V1::TargetsController < ApplicationController
 
-	before_filter :verify_token
+	
     
         def create
 	     	first_name = params[:first_name]
 	     	last_name = params[:last_name]
 	     	phone_no = params[:phone_no]
+	     	email = params[:email]
 	     	random =rand.to_s[2..9]
-	     	
+
 	     	data1 ={}
-	     	if first_name.present? && last_name.present?  && phone_no.present? 
-	     		target = Target.new(first_name: first_name, last_name: last_name, phone_no: phone_no,tracking_id: random,user_id: session[:user_id])
+	     	if first_name.present? && last_name.present?  && phone_no.present? && email.present?
+	     		target = Target.new(first_name: first_name, last_name: last_name, phone_no: phone_no,email: email,tracking_id: random,user_id: session[:user_id])
 	     		    
  		    	if not params[:image].blank?
 				  StringIO.open(Base64.decode64(params[:image])) do |data|
@@ -22,6 +23,7 @@ class Api::V1::TargetsController < ApplicationController
                 end
                 
                 target.save
+                # UserMailer.welcome_email(email, random).deliver_now
               	puts "99999999999999999999999999999999999999"
               	puts  target.errors.inspect
 
@@ -49,6 +51,7 @@ class Api::V1::TargetsController < ApplicationController
 	    		target.first_name = params[:first_name]
 	    		target.last_name = params[:last_name]
 	    		target.phone_no = params[:phone_no]
+	    		target.email = params[:email]
 	    		target.save
 	    		data ={}
 	    		data['error'] = 'false'
@@ -64,11 +67,13 @@ class Api::V1::TargetsController < ApplicationController
  	    end
 
  	    def show
- 	    	    tracking_id = params[:tracking_id]
- 	    		user = session[:user_id]
- 	    		puts user
- 	    		target = Target.where(:user_id => user, tracking_id: tracking_id)
+ 	    	    
+ 	    		tracking_id = params[:tracking_id]
+ 	    		
+ 	    		target = Target.where(tracking_id: tracking_id)
+ 	    		
  	    			puts target
+
  	    			if not target.blank?
  	    				@target1 =[]
 						x=0

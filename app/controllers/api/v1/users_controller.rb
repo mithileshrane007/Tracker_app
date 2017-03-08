@@ -1,13 +1,13 @@
 class Api::V1::UsersController < ApplicationController
 		def create
-			email= params[:email]
-			password= params[:password]
-			phone_no= params[:phone_no]
+			email    = params[:email]
+			password = params[:password]
+			phone_no = params[:phone_no]
 			organisation_name= params[:organisation_name]
 	        data1 ={}
 	        o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
       	    random = (0...50).map { o[rand(o.length)] }.join
-      	    
+
 		       	if email.present? && password.present? && phone_no.present? 
 					user= User.new(email: email,password: password,phone_no: phone_no,organisation_name: organisation_name,auth_token: random)
 					user.save
@@ -28,19 +28,27 @@ class Api::V1::UsersController < ApplicationController
 
  		def show
 	 		begin
-	 			user =User.find(params[:user_id])
-	 			data ={}
-	 			data['result'] = {}
-				data['result']['email'] = user.email
-				data['result']['phone_no'] = user.phone_no
-				data['result']['organisation_name'] = user.organisation_name
-				data['result']['user_id'] = user.id
-				data['result']['auth_token'] = user.auth_token
+	 			
+	 			
+		 			token = request.headers["token"]
+	                puts "88888888888//////////////888888888888888888"
+	                puts token
+	                user = User.find_by_auth_token(token)
+					puts user
+	                puts user.errors.inspect
+		 			data ={}
+		 			data['result'] = {}
+					data['result']['email'] = user.email
+					data['result']['phone_no'] = user.phone_no
+					data['result']['organisation_name'] = user.organisation_name
+					data['result']['user_id'] = user.id
+
 			rescue Exception => e
 				data ={}
 				data['error'] = 'true'
-				data['msg'] = 'something went wrong'
-			end		
+				data['msg'] = 'Token param is blank/Did not match'
+			end	
+				
 				respond_to do |format|
 		    		format.json { render json: data }
 	        	end
