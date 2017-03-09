@@ -171,16 +171,18 @@ class Api::V1::TargetsController < ApplicationController
 					puts target
 
 		 			data1 ={}
-		 			
-					data1['first_name'] =			target.first_name
-					data1['last_name'] = 			target.last_name
-					data1['tracking_id'] = 		target.tracking_id
-					data1['image'] = 				target.image
-					data1['phone_no'] = 			target.phone_no
-					data1['email'] = 				target.email
-					data1['track_time_interval'] =target.track_time_interval
-					data1['track_time_out'] = 	target.track_time_out
-					data1['auth_token'] = 		target.auth_token
+		 			data1['error'] = 'false'
+		            data1['msg'] = 'success'
+		            data1['result'] = {}
+					data1['result']['first_name'] =			target.first_name
+					data1['result']['last_name'] = 			target.last_name
+					data1['result']['tracking_id'] = 		target.tracking_id
+					data1['result']['image'] = 				target.image
+					data1['result']['phone_no'] = 			target.phone_no
+					data1['result']['email'] = 				target.email
+					data1['result']['track_time_interval'] =target.track_time_interval
+					data1['result']['track_time_out'] = 	target.track_time_out
+					data1['result']['auth_token'] = 		target.auth_token
 			rescue Exception => e
 				data1 ={}
 				data1['error'] = 'true'
