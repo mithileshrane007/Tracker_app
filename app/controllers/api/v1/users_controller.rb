@@ -64,7 +64,7 @@ class Api::V1::UsersController < ApplicationController
 	        	end
 	
  	    	end
-
+ 	    
  	    def update
     		begin
  	    		token = request.headers["token"]

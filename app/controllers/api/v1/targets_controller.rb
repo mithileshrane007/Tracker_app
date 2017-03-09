@@ -101,12 +101,14 @@ class Api::V1::TargetsController < ApplicationController
 				        x=x+1
 				      	end
 				      	 	data ={}
+				      	 	data['error'] = 'false'
 						  	data['msg'] = 'success'
 						  	data['result'] = @target1
 
 			      	else
 				      	data ={}
-						data['msg'] = 'Sorry no result found'
+						data['error'] = 'true'
+						data['msg'] = 'unsuccess'
 			      	end
 				      	respond_to do |format|
 		      				format.json { render json: data }
@@ -139,12 +141,14 @@ class Api::V1::TargetsController < ApplicationController
 				        x=x+1
 				      	end
 				      	 	data ={}
+				      	 	data['error'] = 'false'
 						  	data['msg'] = 'success'
 						  	data['result'] = @target1
 
 			      	else
 				      	data ={}
-						data['msg'] = 'Sorry no result found'
+				      	data['error'] = 'true'
+						data['msg'] = 'unsuccess'
 			      	end
 				      	respond_to do |format|
 		      				format.json { render json: data }
@@ -179,12 +183,14 @@ class Api::V1::TargetsController < ApplicationController
 				        x=x+1
 				      	end
 				      	 	data ={}
+				      	 	data['error'] = 'false'
 						  	data['msg'] = 'success'
 						  	data['result'] = @target1
 
 			      	else
 				      	data ={}
-						data['msg'] = 'Sorry no result found'
+				      	data['error'] = 'true'
+						data['msg'] = 'unsuccess'
 			      	end
 				      	respond_to do |format|
 		      				format.json { render json: data }
