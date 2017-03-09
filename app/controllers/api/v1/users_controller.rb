@@ -67,12 +67,12 @@ class Api::V1::UsersController < ApplicationController
 				     else
 				    	data ={}
 				    	data['error'] = 'true'
-				        data['msg'] = "Please confirm your email and password are correct"
+				        data['msg'] = "Invalid email/password combination"
 				    end
 			    else
 			    	data ={}
 			    	data['error'] = 'true'
-			       	data['msg'] = "Please confirm your email and password are correct"
+			       	data['msg'] = "Invalid email/password combination"
 			        
 			    end
 			rescue Exception => e
