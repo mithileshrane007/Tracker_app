@@ -8,6 +8,7 @@ namespace :api do
             post 'users_delete', to: 'users#destroy'
             post 'create_targets', to: 'targets#create'
             post 'targets_show', to: 'targets#show'
+            post 'targets_show_targets', to: 'targets#show_targets'
             post 'targets_update', to: 'targets#update'
             post 'targets_delete', to: 'targets#destroy'
             post 'logs/show', to: 'logs#show'

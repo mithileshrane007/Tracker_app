@@ -111,6 +111,42 @@ class Api::V1::TargetsController < ApplicationController
 
  	    end
 
+ 	    def show_targets
+ 	    	    token = request.headers["token"]
+ 	    		user = User.find_by_auth_token(token).id
+ 	    		target = Target.where(user_id: user)
+ 	    		
+ 	    			puts target
+
+ 	    			if not target.blank?
+ 	    				@target1 =[]
+						x=0
+ 	    				for i in target
+							data1 ={}
+							
+							data1['first_name'] =i.first_name
+							data1['last_name'] = i.last_name
+							data1['tracking_id'] = i.tracking_id
+							data1['image'] = i.image
+							data1['phone_no'] = i.phone_no
+							
+	 	    			@target1.push(data1)
+				        x=x+1
+				      	end
+				      	 	data ={}
+						  	data['msg'] = 'success'
+						  	data['result'] = @target1
+
+			      	else
+				      	data ={}
+						data['msg'] = 'Sorry no result found'
+			      	end
+				      	respond_to do |format|
+		      				format.json { render json: data }
+		    			end	
+
+ 	    end
+
  	    def destroy
  	    	token = request.headers["token"]
     		id = params[:id]
