@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170308073820) do
+ActiveRecord::Schema.define(version: 20170309072701) do
 
   create_table "checkouts", force: :cascade do |t|
     t.integer  "target_id",   limit: 4
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20170308073820) do
     t.string  "organisation_name", limit: 255
     t.integer "phone_no",          limit: 8
     t.string  "auth_token",        limit: 255
-    t.boolean "is_verified",                   default: false
+    t.boolean "is_verified",                   default: true
   end
 
 end
