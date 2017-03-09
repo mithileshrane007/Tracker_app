@@ -2,15 +2,15 @@ class Api::V1::UsersController < ApplicationController
 		def create
 			begin
 				email    = params[:email]
-				password = params[:password]
 				phone_no = params[:phone_no]
 				organisation_name= params[:organisation_name]
 		        data1 ={}
 		        o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
 	      	    random = (0...50).map { o[rand(o.length)] }.join
 
-			       	if email.present? && password.present? && phone_no.present? 
-						user= User.new(email: email,password: password,phone_no: phone_no,organisation_name: organisation_name,auth_token: random)
+			       	if email.present? && phone_no.present? 
+						user = User.new(email: email,phone_no: phone_no,organisation_name: organisation_name,auth_token: random)
+						user.password_digest = BCrypt::Password.create(params[:password])
 							user.save
 							data ={}
 							data['error'] = 'false'
@@ -36,11 +36,61 @@ class Api::V1::UsersController < ApplicationController
 					
  		end
 
+ 		def login
+ 			begin
+	 			email = params[:email]
+	    		password = params[:password]
+
+	    		puts password
+	    		o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+	      	    random = (0...50).map { o[rand(o.length)] }.join
+
+	    		user = User.find_by_email(email)
+  				
+  				puts "******************"
+  				puts user
+			    if user and user.is_verified == true
+				   if user && user.authenticate(params[:password])
+
+				        user = User.find(user.id)
+				        user.auth_token = random
+				        user.save
+				        data={}
+						data['error'] = 'false'
+		            	data['msg'] = 'success'
+						data['result'] = {}
+						data['result']['id'] = user.id
+						data['result']['email'] = user.email
+						data['result']['phone_no'] = user.phone_no
+						data['result']['organisation_name'] = user.organisation_name
+						data['result']['auth_token'] = user.auth_token
+				     else
+				    	data ={}
+				    	data['error'] = 'true'
+				        data['msg'] = "Please confirm your email and password are correct"
+				    end
+			    else
+			    	data ={}
+			    	data['error'] = 'true'
+			       	data['msg'] = "Please confirm your email and password are correct"
+			        
+			    end
+			rescue Exception => e
+					data ={}
+					data['error'] = '1003'
+		            data['msg'] = 'something went wrong'
+			end	
+					respond_to do |format|
+		                format.json { render json: data }
+					    end
+ 		end
+
+
+
+
  		def show
 	 		begin
-	 			
-	 			
-		 			token = request.headers["token"]
+	 				token = request.headers["token"]
 	                puts "88888888888//////////////888888888888888888"
 	                puts token
 	                user = User.find_by_auth_token(token)
@@ -63,8 +113,8 @@ class Api::V1::UsersController < ApplicationController
 		    		format.json { render json: data }
 	        	end
 	
- 	    	end
- 	    
+ 	    end
+
  	    def update
     		begin
  	    		token = request.headers["token"]

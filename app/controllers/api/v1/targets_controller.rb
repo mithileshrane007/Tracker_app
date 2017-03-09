@@ -157,44 +157,39 @@ class Api::V1::TargetsController < ApplicationController
  	    end
 
  	    def target_login
- 	    	    
- 	    		tracking_id = params[:tracking_id]
+ 	    	begin
  	    		
- 	    		target = Target.where(tracking_id: tracking_id)
- 	    		
- 	    			puts target
 
- 	    			if not target.blank?
- 	    				@target1 =[]
-						x=0
- 	    				for i in target
-							data1 ={}
-							
-							data1['first_name'] =i.first_name
-							data1['last_name'] = i.last_name
-							data1['tracking_id'] = i.tracking_id
-							data1['image'] = i.image
-							data1['phone_no'] = i.phone_no
-							data1['email'] = i.email
-							data1['track_time_interval'] = i.track_time_interval
-							data1['track_time_out'] = i.track_time_out
-							
-	 	    			@target1.push(data1)
-				        x=x+1
-				      	end
-				      	 	data ={}
-				      	 	data['error'] = 'false'
-						  	data['msg'] = 'success'
-						  	data['result'] = @target1
+ 	    		o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+	      	    	random = (0...50).map { o[rand(o.length)] }.join
 
-			      	else
-				      	data ={}
-				      	data['error'] = 'true'
-						data['msg'] = 'unsuccess'
-			      	end
-				      	respond_to do |format|
-		      				format.json { render json: data }
-		    			end	
+					tracking = params[:tracking_id]
+					target = Target.find_by_tracking_id(tracking)
+                    target.auth_token = random
+                    target.save
+					puts "*********************"
+					puts target
+
+		 			data1 ={}
+		 			
+					data1['first_name'] =			target.first_name
+					data1['last_name'] = 			target.last_name
+					data1['tracking_id'] = 		target.tracking_id
+					data1['image'] = 				target.image
+					data1['phone_no'] = 			target.phone_no
+					data1['email'] = 				target.email
+					data1['track_time_interval'] =target.track_time_interval
+					data1['track_time_out'] = 	target.track_time_out
+					data1['auth_token'] = 		target.auth_token
+			rescue Exception => e
+				data1 ={}
+				data1['error'] = 'true'
+				data1['msg'] = 'unsuccess'
+			end	
+				
+				respond_to do |format|
+		    		format.json { render json: data1 }
+	        	end
 
  	    end
 

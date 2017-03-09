@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 namespace :api do
         namespace :v1 do
-
+            post 'user_login', to: 'users#login'
             post 'create_users', to: 'users#create'
             post 'users_show', to: 'users#show'
             post 'users_update', to: 'users#update'

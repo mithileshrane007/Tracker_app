@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170309072701) do
+ActiveRecord::Schema.define(version: 20170309110733) do
 
   create_table "checkouts", force: :cascade do |t|
     t.integer  "target_id",   limit: 4
@@ -22,10 +22,11 @@ ActiveRecord::Schema.define(version: 20170309072701) do
   end
 
   create_table "logs", force: :cascade do |t|
-    t.datetime "created_at",                                    null: false
+    t.datetime "created_at",                                      null: false
     t.integer  "target_id",  limit: 4
-    t.decimal  "latitude",             precision: 10, scale: 6
-    t.decimal  "longitude",            precision: 10, scale: 6
+    t.decimal  "latitude",               precision: 10, scale: 6
+    t.decimal  "longitude",              precision: 10, scale: 6
+    t.string   "time_zone",  limit: 255
   end
 
   create_table "targets", force: :cascade do |t|
@@ -44,6 +45,7 @@ ActiveRecord::Schema.define(version: 20170309072701) do
     t.string   "email",               limit: 255
     t.string   "track_time_interval", limit: 255
     t.string   "track_time_out",      limit: 255
+    t.string   "auth_token",          limit: 255
   end
 
   create_table "users", force: :cascade do |t|
