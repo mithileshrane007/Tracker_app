@@ -93,6 +93,9 @@ class Api::V1::TargetsController < ApplicationController
 							data1['tracking_id'] = i.tracking_id
 							data1['image'] = i.image
 							data1['phone_no'] = i.phone_no
+							data1['email'] = i.email
+							data1['track_time_interval'] = i.track_time_interval
+							data1['track_time_out'] = i.track_time_out
 							
 	 	    			@target1.push(data1)
 				        x=x+1
@@ -129,6 +132,48 @@ class Api::V1::TargetsController < ApplicationController
 							data1['tracking_id'] = i.tracking_id
 							data1['image'] = i.image
 							data1['phone_no'] = i.phone_no
+							data1['email'] = i.email
+							data1['track_time_interval'] = i.track_time_interval
+							data1['track_time_out'] = i.track_time_out
+	 	    			@target1.push(data1)
+				        x=x+1
+				      	end
+				      	 	data ={}
+						  	data['msg'] = 'success'
+						  	data['result'] = @target1
+
+			      	else
+				      	data ={}
+						data['msg'] = 'Sorry no result found'
+			      	end
+				      	respond_to do |format|
+		      				format.json { render json: data }
+		    			end	
+
+ 	    end
+
+ 	    def target_login
+ 	    	    
+ 	    		tracking_id = params[:tracking_id]
+ 	    		
+ 	    		target = Target.where(tracking_id: tracking_id)
+ 	    		
+ 	    			puts target
+
+ 	    			if not target.blank?
+ 	    				@target1 =[]
+						x=0
+ 	    				for i in target
+							data1 ={}
+							
+							data1['first_name'] =i.first_name
+							data1['last_name'] = i.last_name
+							data1['tracking_id'] = i.tracking_id
+							data1['image'] = i.image
+							data1['phone_no'] = i.phone_no
+							data1['email'] = i.email
+							data1['track_time_interval'] = i.track_time_interval
+							data1['track_time_out'] = i.track_time_out
 							
 	 	    			@target1.push(data1)
 				        x=x+1
