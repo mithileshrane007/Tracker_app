@@ -89,6 +89,7 @@ class Api::V1::LogsController < ApplicationController
 			begin
 				token = request.headers["token"]
 				puts '1' 
+				puts params
 				target = Target.find_by_auth_token(token).id
 				
 				puts '2' 
