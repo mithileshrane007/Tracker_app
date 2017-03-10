@@ -86,28 +86,28 @@ class Api::V1::LogsController < ApplicationController
 		# end
 
 		def log_create
-			# begin
+			begin
 				token = request.headers["token"]
-				puts '1' 
+				# puts '1' 
 				puts params
 				target = Target.find_by_auth_token(token).id
 				
-				puts '2' 
+				# puts '2' 
 				target_id = params[:target_id]
-				puts '3' 
+				# puts '3' 
 
 				length =  params[:latitude].count
-				puts 'length:' +length.to_s
+				# puts 'length:' +length.to_s
 
 				(0..length-1).each do |i|
 					index = i.to_s
-					puts "**********in******************"
+					# puts "**********in******************"
 
 					log= Log.new(latitude: params[:latitude][index],longitude: params[:longitude][index],created_at: params[:created_at][index],time_zone: params[:time_zone][index],target_id: target)
-					puts "**********middle3******************"
+					# puts "**********middle3******************"
 
 					log.save
-					puts "**********out******************"
+					# puts "**********out******************"
 
 				end
 				
@@ -115,13 +115,13 @@ class Api::V1::LogsController < ApplicationController
 				data1['error'] = 'false'
 		        data1['msg'] = 'success'
 				
-			# rescue Exception => e
-			#     data1 ={}
-			# 	data1['error'] = 'true'
-		 #        data1['msg'] = 'Authentication Failure'
-		 #        puts "**********9999999999999******************"
-		 #        puts e.inspect
-			# end	
+			rescue Exception => e
+			    data1 ={}
+				data1['error'] = 'true'
+		        data1['msg'] = 'Authentication Failure'
+		        # puts "**********9999999999999******************"
+		        # puts e.inspect
+			end	
 				
 			respond_to do |format|
   				format.json { render json: data1 }
