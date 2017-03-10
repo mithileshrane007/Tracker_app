@@ -95,8 +95,14 @@ class Api::V1::LogsController < ApplicationController
 				
 				(0..length-1).each do |i|
 					index = i.to_s
+					puts "**********in******************"
+
 					log= Log.new(latitude: params[:latitude][index],longitude: params[:longitude][index],created_at: params[:created_at][index],time_zone: params[:time_zone][index],target_id: target)
+					puts "**********middle3******************"
+
 					log.save
+					puts "**********out******************"
+
 				end
 				
 				data1 ={}
