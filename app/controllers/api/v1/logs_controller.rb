@@ -88,8 +88,12 @@ class Api::V1::LogsController < ApplicationController
 		def log_create
 			begin
 				token = request.headers["token"]
+				puts '1' 
 				target = Target.find_by_auth_token(token).id
+				
+				puts '2' 
 				target_id = params[:target_id]
+				puts '3' 
 
 				length =  params[:latitude].count
 				puts 'length:' +length
