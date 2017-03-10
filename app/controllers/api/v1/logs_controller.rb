@@ -87,19 +87,22 @@ class Api::V1::LogsController < ApplicationController
 
 		def log_create
 			# begin
-				token = request.headers["token"]
-				target = Target.find_by_auth_token(token).id
-				target_id = params[:target_id]
+				# token = request.headers["token"]
+				# target = Target.find_by_auth_token(token).id
+				# target_id = params[:target_id]
 				
-				data = JSON.parse(params[:data])
-				for i in data
-					log= Log.new(latitude: i['latitude'],longitude: i['longitude'],created_at: i['created_at'],time_zone: i['time_zone'],target_id: target)
-						log.save
-		                puts  log.errors.inspect
-						data1 ={}
-						data1['error'] = 'false'
-				        data1['msg'] = 'success'
-				end	
+				puts "=========="
+				puts params
+				puts "=========="
+				# data = JSON.parse(params[:data])
+				# for i in data
+				# 	log= Log.new(latitude: i['latitude'],longitude: i['longitude'],created_at: i['created_at'],time_zone: i['time_zone'],target_id: target)
+				# 		log.save
+		  #               puts  log.errors.inspect
+				# 		data1 ={}
+				# 		data1['error'] = 'false'
+				#         data1['msg'] = 'success'
+				# end	
 			# rescue Exception => e
 					 #    data1 ={}
 						# data1['error'] = 'true'
