@@ -14,6 +14,7 @@ namespace :api do
             post 'targets_delete', to: 'targets#destroy'
             post 'logs/show', to: 'logs#show'
             post 'logs/tracking', to: 'logs#tracking'
+            post 'logs_create', to: 'logs#log_create'
             resources :targets
             resources :users
             resources :logs 
