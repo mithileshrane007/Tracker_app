@@ -86,7 +86,7 @@ class Api::V1::LogsController < ApplicationController
 		# end
 
 		def log_create
-			begin
+			# begin
 				token = request.headers["token"]
 				puts '1' 
 				puts params
@@ -97,7 +97,7 @@ class Api::V1::LogsController < ApplicationController
 				puts '3' 
 
 				length =  params[:latitude].count
-				puts 'length:' +length
+				puts 'length:' +length.to_s
 
 				(0..length-1).each do |i|
 					index = i.to_s
@@ -115,13 +115,13 @@ class Api::V1::LogsController < ApplicationController
 				data1['error'] = 'false'
 		        data1['msg'] = 'success'
 				
-			rescue Exception => e
-			    data1 ={}
-				data1['error'] = 'true'
-		        data1['msg'] = 'Authentication Failure'
-		        puts "**********9999999999999******************"
-		        puts e.inspect
-			end	
+			# rescue Exception => e
+			#     data1 ={}
+			# 	data1['error'] = 'true'
+		 #        data1['msg'] = 'Authentication Failure'
+		 #        puts "**********9999999999999******************"
+		 #        puts e.inspect
+			# end	
 				
 			respond_to do |format|
   				format.json { render json: data1 }
