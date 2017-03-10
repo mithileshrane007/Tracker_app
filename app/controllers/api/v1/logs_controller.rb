@@ -92,7 +92,8 @@ class Api::V1::LogsController < ApplicationController
 				target_id = params[:target_id]
 
 				length =  params[:latitude].count
-				
+				puts 'length:' +length
+
 				(0..length-1).each do |i|
 					index = i.to_s
 					puts "**********in******************"
