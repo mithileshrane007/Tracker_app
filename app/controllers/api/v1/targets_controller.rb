@@ -176,9 +176,9 @@ class Api::V1::TargetsController < ApplicationController
 		 			data1['error'] = 'false'
 		            data1['msg'] = 'success'
 		            data1['result'] = {}
+		            data1['result']['target_id'] = 		    target.id
 					data1['result']['first_name'] =			target.first_name
 					data1['result']['last_name'] = 			target.last_name
-					data1['result']['target_id'] = 		target.id
 					data1['result']['tracking_id'] = 		target.tracking_id
 					data1['result']['image'] = 				target.image
 					data1['result']['phone_no'] = 			target.phone_no
