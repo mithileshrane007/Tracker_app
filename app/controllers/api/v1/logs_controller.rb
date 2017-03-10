@@ -86,32 +86,32 @@ class Api::V1::LogsController < ApplicationController
 		# end
 
 		def log_create
-			# begin
-				# token = request.headers["token"]
-				# target = Target.find_by_auth_token(token).id
-				# target_id = params[:target_id]
+			begin
+				token = request.headers["token"]
+				target = Target.find_by_auth_token(token).id
+				target_id = params[:target_id]
+
+				length =  params[:latitude].count
 				
-				puts "=========="
-				puts params
-				puts "=========="
-				# data = JSON.parse(params[:data])
-				# for i in data
-				# 	log= Log.new(latitude: i['latitude'],longitude: i['longitude'],created_at: i['created_at'],time_zone: i['time_zone'],target_id: target)
-				# 		log.save
-		  #               puts  log.errors.inspect
-				# 		data1 ={}
-				# 		data1['error'] = 'false'
-				#         data1['msg'] = 'success'
-				# end	
-			# rescue Exception => e
-					 #    data1 ={}
-						# data1['error'] = 'true'
-				  #       data1['msg'] = 'Authentication Failure'
-			# end	
-				
-				respond_to do |format|
-	  				format.json { render json: data1 }
+				(0..length-1).each do |i|
+					index = i.to_s
+					log= Log.new(latitude: params[:latitude][index],longitude: params[:longitude][index],created_at: params[:created_at][index],time_zone: params[:time_zone][index],target_id: target)
+					log.save
 				end
+				
+				data1 ={}
+				data1['error'] = 'false'
+		        data1['msg'] = 'success'
+				
+			rescue Exception => e
+			    data1 ={}
+				data1['error'] = 'true'
+		        data1['msg'] = 'Authentication Failure'
+			end	
+				
+			respond_to do |format|
+  				format.json { render json: data1 }
+			end
 		end
 			
 
