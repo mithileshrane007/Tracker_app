@@ -101,9 +101,9 @@ class Api::V1::LogsController < ApplicationController
 				        data1['msg'] = 'success'
 				end	
 			# rescue Exception => e
-					    data1 ={}
-						data1['error'] = 'true'
-				        data1['msg'] = 'Authentication Failure'
+					 #    data1 ={}
+						# data1['error'] = 'true'
+				  #       data1['msg'] = 'Authentication Failure'
 			# end	
 				
 				respond_to do |format|
