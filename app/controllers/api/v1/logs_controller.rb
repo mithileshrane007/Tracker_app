@@ -86,10 +86,9 @@ class Api::V1::LogsController < ApplicationController
 		# end
 
 		def log_create
-			begin
+			# begin
 				token = request.headers["token"]
-
-	        target = Target.find_by_auth_token(token).id
+				target = Target.find_by_auth_token(token).id
 				target_id = params[:target_id]
 				
 				data = JSON.parse(params[:data])
@@ -101,11 +100,11 @@ class Api::V1::LogsController < ApplicationController
 						data1['error'] = 'false'
 				        data1['msg'] = 'success'
 				end	
-			rescue Exception => e
+			# rescue Exception => e
 					    data1 ={}
 						data1['error'] = 'true'
 				        data1['msg'] = 'Authentication Failure'
-			end	
+			# end	
 				
 				respond_to do |format|
 	  				format.json { render json: data1 }
