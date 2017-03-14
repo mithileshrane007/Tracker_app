@@ -53,8 +53,7 @@ class Api::V1::LogsController < ApplicationController
 		#       				format.json { render json: data }
 		#     			end	
 
-
-		# end
+	# end
 
 		# def tracking
 		# 	start_date = params[:start_date]

@@ -15,6 +15,7 @@ namespace :api do
             post 'logs/show', to: 'logs#show'
             post 'logs/tracking', to: 'logs#tracking'
             post 'logs_create', to: 'logs#log_create'
+            post 'create_checkout', to: 'checkouts#create'
             resources :targets
             resources :users
             resources :logs 
