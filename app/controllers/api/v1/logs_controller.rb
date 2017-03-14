@@ -118,8 +118,8 @@ class Api::V1::LogsController < ApplicationController
 			    data1 ={}
 				data1['error'] = 'true'
 		        data1['msg'] = 'Authentication Failure'
-		        # puts "**********9999999999999******************"
-		        # puts e.inspect
+		        puts "**********9999999999999******************"
+		        puts e.inspect
 			end	
 				
 			respond_to do |format|
