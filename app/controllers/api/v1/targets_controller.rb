@@ -203,14 +203,49 @@ class Api::V1::TargetsController < ApplicationController
     		id = params[:id]
     		user = User.find_by_auth_token(token).id
  	    	@target = Target.where(id: id, user_id: user).first
-
- 	    	puts "/////////////////////////////////"
+			puts "/////////////////////////////////"
  	    	puts @target
 	        if @target.destroy
 	            render json: {error: 'false', status: 'successful'}
 	        else
 	            render json: {error: 'true', msg: 'process not completed'}
 	        end
+ 	    end
+
+ 	    def logout
+ 	    	begin
+ 	    		token = request.headers["token"]
+ 	    		is_online = params[:is_online]
+ 	    		target = Target.find_by_auth_token(token).id
+ 	    		if is_online=='true'
+ 	    			tar = Target.find(target)
+
+ 	    			puts "999999999999999999999999999999"
+ 	    			puts tar
+ 	    			tar.is_online = 'true'
+ 	    			tar.save
+ 	    			data1 ={}
+		 			data1['error'] = 'false'
+		            data1['msg'] = 'success'
+				else
+					is_online=='false'
+					tar = Target.find(target)
+ 	    			tar.is_online = 'false'
+ 	    			tar.save
+ 	    			data1 ={}
+		 			data1['error'] = 'false'
+		            data1['msg'] = 'success'
+ 	    		end
+
+ 	    	rescue Exception => e
+ 	    		data1 ={}
+				data1['error'] = 'true'
+				data1['msg'] = 'unsuccess'
+ 	    	end
+ 	    	    respond_to do |format|
+		    		format.json { render json: data1 }
+	        	end
+
  	    end
    
 end
