@@ -88,10 +88,10 @@ class Api::V1::LogsController < ApplicationController
 			begin
 				token = request.headers["token"]
 				# puts '1' 
-				puts params
+				
 				target = Target.find_by_auth_token(token).id
 				
-				# puts '2' 
+			   	
 				target_id = params[:target_id]
 				# puts '3' 
 
@@ -100,13 +100,13 @@ class Api::V1::LogsController < ApplicationController
 
 				(0..length-1).each do |i|
 					index = i.to_s
-					# puts "**********in******************"
+					puts "**********in******************"
 
 					log= Log.new(latitude: params[:latitude][index],longitude: params[:longitude][index],created_at: params[:created_at][index],time_zone: params[:time_zone][index],target_id: target)
-					# puts "**********middle3******************"
+					puts "**********middle3******************"
 
 					log.save
-					# puts "**********out******************"
+					puts "**********out******************"
 
 				end
 				

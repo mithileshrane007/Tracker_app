@@ -247,5 +247,52 @@ class Api::V1::TargetsController < ApplicationController
 	        	end
 
  	    end
+
+ 	    def log_hour
+ 	    	
+	 			token = request.headers["token"]
+	 	    	date= params[:date]
+	 	    	time= params[:time]
+	 	    	target_id= params[:target_id]
+	 	    	is_start= params[:is_start]
+	 	    	is_stop= params[:is_stop]
+
+	 	    if not is_start.blank? 
+
+	 	    	log = DayLog.find_by_target_id_and_date(target_id,date)
+	 	    	
+		 	    	puts log
+		 		if log.blank?
+		 			hour= DayLog.new(target_id: target_id,date: date,prev_time: time)
+		 			hour.save
+		 			data1 ={}
+					data1['error'] = 'false'
+					data1['msg'] = 'success'
+		 		else
+		 			puts "***********************"
+		 			log = DayLog.find_by_target_id_and_date(target_id,date)
+		 			
+		 	    	puts log
+		 			log.prev_time= time
+		 			puts "99999999999999999999999999999999999999"
+		 			puts log.prev_time
+		 			log.save
+		 			data1 ={}
+					data1['error'] = 'false'
+					data1['msg'] = 'success'
+		 		end
+		 	else
+		 			data1 ={}
+					data1['error'] = 'true'
+					data1['msg'] = 'unsuccessful'
+		 	end	
+		 			respond_to do |format|
+			    		format.json { render json: data1 }
+		        	end
+
+
+
+
+ 	    end
    
 end
