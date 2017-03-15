@@ -338,7 +338,7 @@ class Api::V1::TargetsController < ApplicationController
                         data1['msg'] = 'success'
                     end
                 else
-                        log = DayLog.find_by_target_id_and_date(target_id,date)
+                        log = DayLog.find_by_target_id_and_date(target,date)
                         puts log
                         log.log_hour = log.log_hour + (Time.parse(time) - Time.parse(log.prev_time))/3600
                         puts log.log_hour
