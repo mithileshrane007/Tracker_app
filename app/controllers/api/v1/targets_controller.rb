@@ -334,6 +334,7 @@ class Api::V1::TargetsController < ApplicationController
                         data1 ={}
                         data1['error'] = 'false'
                         data1['loggedhour'] = log.log_hour
+                        data1['prev_time'] = log.prev_time
                         data1['msg'] = 'success'
                     end
                 else
@@ -349,6 +350,7 @@ class Api::V1::TargetsController < ApplicationController
                         data1 ={}
                         data1['error'] = 'false'
                         data1['loggedhour'] = log.log_hour
+                        data1['prev_time'] = log.prev_time
                         data1['msg'] = 'success'
                 end 
             rescue Exception => e
