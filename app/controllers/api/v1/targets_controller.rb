@@ -251,6 +251,7 @@ class Api::V1::TargetsController < ApplicationController
  	    def log_hour
  	    	
 	 			token = request.headers["token"]
+	 			target = Target.find_by_auth_token(token).id
 	 	    	date= params[:date]
 	 	    	time= params[:time]
 	 	    	target_id= params[:target_id]
@@ -263,7 +264,7 @@ class Api::V1::TargetsController < ApplicationController
 	 	    	
 		 	    	puts log
 		 		if log.blank?
-		 			hour= DayLog.new(target_id: target_id,date: date,prev_time: time)
+		 			hour= DayLog.new(target_id: target,date: date,prev_time: time)
 		 			hour.save
 		 			data1 ={}
 					data1['error'] = 'false'
