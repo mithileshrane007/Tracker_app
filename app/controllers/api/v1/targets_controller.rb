@@ -354,7 +354,9 @@ class Api::V1::TargetsController < ApplicationController
                         data1['msg'] = 'success'
                 end 
             rescue Exception => e
-            
+            	puts "///////////////////////////////////"
+            puts e
+            puts e.inspect
             data1 ={}
             data1['error'] = 'true'
             data1['msg'] = 'unsuccess'  
