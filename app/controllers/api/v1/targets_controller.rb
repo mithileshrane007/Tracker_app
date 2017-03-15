@@ -295,9 +295,9 @@ class Api::V1::TargetsController < ApplicationController
 
 
  	  #   end
- 	  def log_hour
+ 	  
  	  	def log_hour
-            
+            	
                 token = request.headers["token"]
                 target = Target.find_by_auth_token(token).id
                 date= params[:date]
@@ -326,12 +326,14 @@ class Api::V1::TargetsController < ApplicationController
                         puts log
                         log.log_hour = log.log_hour + (Time.parse(time) - Time.parse(log.prev_time))/3600
                         puts log.log_hour
+
                         log.prev_time = time
                         puts "99999999999999999999999999999999999999"
                         puts log.prev_time
                         log.save
                         data1 ={}
                         data1['error'] = 'false'
+                        data1['loggedhour'] = log.log_hour
                         data1['msg'] = 'success'
                     end
                 else
@@ -340,11 +342,13 @@ class Api::V1::TargetsController < ApplicationController
                         log.log_hour = log.log_hour + (Time.parse(time) - Time.parse(log.prev_time))/3600
                         puts log.log_hour
                         log.prev_time = time
+
                         puts "99999999999999999999999999999999999999"
                         puts log.prev_time
                         log.save
                         data1 ={}
                         data1['error'] = 'false'
+                        data1['loggedhour'] = log.log_hour
                         data1['msg'] = 'success'
                 end 
             rescue Exception => e
