@@ -160,20 +160,23 @@ class Api::V1::UsersController < ApplicationController
 	            start_date = params[:start_date]
 	            end_date = params[:end_date]
 	            target = Target.find_by_tracking_id(params[:tracking_id])
-	            target_user_id = target.id
-				puts "-+++++++++++++++++++++++--------------"
-	            puts target_user_id
+	           
 
-	             
+	             arrayObj = []
 	             data={}
-	            if not target_user_id.blank? && user.blank? 
+	            if  target && user
+	            	target_user_id = target.id
+					puts "-+++++++++++++++++++++++--------------"
+			        puts target_user_id
+
 	             	if start_date.present? && end_date.present?
 	             		date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id)
 	             		puts date_log
+	             		
 	             		puts "---------------"
 	             		puts date_log.inspect
-	             		if date_log
-	             			arrayObj = []
+	             		if date_log.count>0
+	             			
 	             			x = 0
 	             			for i in date_log
 	             				puts x+1
@@ -186,21 +189,25 @@ class Api::V1::UsersController < ApplicationController
 		             	data['result'] = arrayObj	
 		             	data['msg'] = "Success"
 		             	else
+		             		tempObj={}
+		             		tempObj['log_hour'] = -1
+		             		arrayObj.push(tempObj)
+		             		puts "-11111111-"
+		             		
 	             			data['error'] = false
-	             			data['log_hour'] = 0
+	             			data['result'] = arrayObj	             			
 	             			data['msg'] = "No user with logs found."
 		             	end
-
-		             	data['error'] = false
-
 	             	else
 	             		data['error']=true
+	             		data['result'] = arrayObj	             		
 	             		data['msg']="Parameter invalid or incomplete."	
 	             	end
 
 	            else
 	             	data['error']=true
-	             	data['msg']="Authentication or unauthorized request."
+	             	data['result'] = arrayObj	             		
+	             	data['msg']="Invalid Authentication or unauthorized request."
 
 	            end
 
