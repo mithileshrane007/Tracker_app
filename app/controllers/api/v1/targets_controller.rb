@@ -367,6 +367,7 @@ class Api::V1::TargetsController < ApplicationController
                 format.json { render json: data1 }
             end
 
- 	  end
+ 	  	end
+
    
 end

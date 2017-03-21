@@ -18,6 +18,7 @@ namespace :api do
             post 'create_checkout', to: 'checkouts#create'
             post 'target_session_status', to: 'targets#logout'
             post 'logged_hours', to: 'targets#log_hour'
+            post 'getLogswithDate', to: 'users#getLogsForSpecificDates'
             resources :targets
             resources :users
             resources :logs 
