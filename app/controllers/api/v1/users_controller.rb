@@ -166,24 +166,21 @@ class Api::V1::UsersController < ApplicationController
 	             data={}
 	            if  target && user
 	            	target_user_id = target.id
-					puts "-+++++++++++++++++++++++--------------"
+					puts "-----------+++++++++++++++++++++++--------------"
 			        puts target_user_id
 
 	             	if start_date.present? && end_date.present?
 	             		date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id)
 	             		puts date_log
-	             		
-	             		puts "---------------"
+	             		puts "-----------------------"
 	             		puts date_log.inspect
 	             		if date_log.count>0
-	             			
 	             			x = 0
 	             			for i in date_log
 	             				puts x+1
 		             			object = {}
 		             			object['log_hour'] = i.log_hour
-		             			arrayObj.push(object)	
-		             			
+		             			arrayObj.push(object)		             			
 		             		end
 						data['error'] = false
 		             	data['result'] = arrayObj	
@@ -192,21 +189,18 @@ class Api::V1::UsersController < ApplicationController
 		             		tempObj={}
 		             		tempObj['log_hour'] = -1
 		             		arrayObj.push(tempObj)
-		             		puts "-11111111-"
-		             		
+		             		puts "-1111111111111111-"
 	             			data['error'] = false
 	             			data['result'] = arrayObj	             			
 	             			data['msg'] = "No user with logs found."
 		             	end
 	             	else
 	             		data['error']=true
-	             		data['result'] = arrayObj	             		
 	             		data['msg']="Parameter invalid or incomplete."	
 	             	end
 
 	            else
 	             	data['error']=true
-	             	data['result'] = arrayObj	             		
 	             	data['msg']="Invalid Authentication or unauthorized request."
 
 	            end

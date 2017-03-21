@@ -296,78 +296,92 @@ class Api::V1::TargetsController < ApplicationController
 
  	  #   end
  	  
- 	  	def log_hour
-            	
-                token = request.headers["token"]
-                target = Target.find_by_auth_token(token).id
-                date= params[:date]
-                time= params[:time]
-                target_id= params[:target_id]
-                is_start= params[:is_start]
-                is_stop= params[:is_stop]
-            begin
-                
-            
-                if not is_start.blank? 
-                    log = DayLog.find_by_target_id_and_date(target,date)
-                    
-                        puts log
-                    if log.blank?
-                        hour= DayLog.new(target_id: target,date: date,prev_time: time)
-                        hour.log_hour = 0
-                        hour.save
-                        data1 ={}
-                        data1['error'] = 'false'
-                        data1['msg'] = 'success'
-                    else
-                        puts "***********************"
-                        log = DayLog.find_by_target_id_and_date(target,date)
-                        
-                        puts log
-                        #log.log_hour = log.log_hour + (Time.parse(time) - Time.parse(log.prev_time))/3600
-                        puts log.log_hour
+  	def log_hour
+    	
+        token = request.headers["token"]
+        targetObj = Target.find_by_auth_token(token)
+        if targetObj
+        	target = targetObj.id
+        end	
+        date = params[:date]
+        time = params[:time]
+        target_id = params[:target_id]
+        is_start = params[:is_start]
+        is_stop = params[:is_stop]
+        data1 ={}
 
-                        log.prev_time = time
-                        puts "99999999999999999999999999999999999999"
-                        puts log.prev_time
-                        log.save
-                        data1 ={}
-                        data1['error'] = 'false'
-                        data1['loggedhour'] = log.log_hour
-                        data1['prev_time'] = log.prev_time
-                        data1['date'] = log.date
-                        data1['msg'] = 'success'
-                    end
-                else
-                        log = DayLog.find_by_target_id_and_date(target,date)
-                        puts log
-                        log.log_hour = log.log_hour + (Time.parse(time) - Time.parse(log.prev_time))/3600
-                        puts log.log_hour
-                        log.prev_time = time
+	    if target && date.present? && time.present?        	
+	        if not is_start.blank? && is_start
+	            log = DayLog.find_by_target_id_and_date(target,date)                    
+	            puts log
+	            if log.blank?
+	                hour= DayLog.new(target_id: target,date: date,prev_time: time)
+	                hour.log_hour = "00.00"
+	                hour.save
+	                data1['error'] = 'false'
+	                data1['loggedhour'] = hour.log_hour
+	                data1['prev_time'] = hour.prev_time
+	                data1['date'] = hour.date
+	                data1['msg'] = 'success'
+	            else
+	                puts "**************************"
+	                log = DayLog.find_by_target_id_and_date(target,date)                        
+	                # puts log
+	             
+	                # puts log.log_hour
+	                log.prev_time = time
+	                # puts "99999999999999999999999999999999999999"
+	                # puts log.prev_time
+	                log.save
+	                data1['error'] = 'false'
+	                data1['loggedhour'] = log.log_hour
+	                data1['prev_time'] = log.prev_time
+	                data1['date'] = log.date
+	                data1['msg'] = 'success'
+	            end
+	        elsif not is_stop.blank? && is_stop               	
+	                log = DayLog.find_by_target_id_and_date(target,date)
+	                # puts log
+	                # puts Time.parse(log.prev_time)
+	                # puts Time.parse(time)
+	                prev_hr= log.log_hour.split('.').first.to_f * 3600 + log.log_hour.split('.').last.to_f * 60
+				 	# puts "prev_hr"
+					# puts prev_hr.to_s 
 
-                        puts "99999999999999999999999999999999999999"
-                        puts log.prev_time
-                        log.save
-                        data1 ={}
-                        data1['error'] = 'false'
-                        data1['loggedhour'] = log.log_hour
-                        data1['prev_time'] = log.prev_time
-                        data1['date'] = log.date
-                        data1['msg'] = 'success'
-                end 
-            rescue Exception => e
-            	puts "///////////////////////////////////"
-            puts e
-            puts e.inspect
-            data1 ={}
-            data1['error'] = 'true'
-            data1['msg'] = 'unsuccess'  
-            end
-            respond_to do |format|
-                format.json { render json: data1 }
-            end
+	                seconds = (prev_hr + ((Time.parse(time) - Time.parse(log.prev_time))).to_f)	               
+					# puts "seconds"
+					# puts seconds.to_s
+					# puts "log.log_hour"
+					log.log_hour= Time.at((seconds)).utc.strftime("%H.%M").to_s
+	              
+	                # puts log.log_hour
+	                log.prev_time = time
+	                # puts "99999999999999999999999999999999999999"
+	                # puts log.prev_time
+	                log.save
+	                data1['error'] = 'false'
+	                data1['loggedhour'] = log.log_hour
+	                data1['prev_time'] = log.prev_time
+	                data1['date'] = log.date
+	                data1['msg'] = 'success'
+	               
 
- 	  	end
+	        
+	        else
+	        	data1['error'] = 'true'
+	       		data1['msg'] = 'unsuccess invalid params.'  
+	        end 
+	  	else
+	    	data1['error'] = 'true'
+	   		data1['msg'] = 'unsuccess unauthorized request.'  
+	  	end
+	   	
+	    	    
+	    respond_to do |format|
+	        format.json { render json: data1 }
+	    end
+
+  	end
 
    
 end
