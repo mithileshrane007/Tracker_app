@@ -169,7 +169,7 @@ class Api::V1::UsersController < ApplicationController
 		        puts target_user_id
 
              	if start_date.present? && end_date.present?
-             		date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id).order('date desc')
+             		date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id).order('date asc')
              		puts date_log
              		puts "-----------------------"
              		puts date_log.inspect
@@ -229,7 +229,7 @@ class Api::V1::UsersController < ApplicationController
             if user && target
             	target_id = target.id
             	if date.present?
-            			logs = Log.where("target_id = ? and CAST(created_at AS DATE) = ?",target_id,date)
+            			logs = Log.where("target_id = ? and CAST(created_at AS DATE) = ?",target_id,date).order('created_at asc')
             			# puts logs.inspect
 		            	if logs.count > 0
 		            		puts "in if"
@@ -239,11 +239,10 @@ class Api::V1::UsersController < ApplicationController
 			            		object = {}
 			         			object['latitude'] = i.latitude
 			         			object['longitude'] = i.longitude
-			         			date_and_time = '%Y-%m-%d %H:%M:%S %Z'
 								# object['check'] = DateTime.strptime("2017-03-21 07:01:42 Asia/Kolkata",date_and_time).strftime("%I:%M %P")
 			         			# puts TimeZone[i.time_zone].parse(i.created_at).strftime("%I:%M %P").to_s
 			         			# object['time'] = i.created_at.strftime("%I:%M %P")
-			         			object['time'] = i.created_at.localtime.strftime("%I:%M %P")
+			         			object['time'] = i.created_at.in_time_zone(i.time_zone).strftime("%I:%M %P")
 			         			arrayObj.push(object)	         			
 		         			end	
 		         			data['error']=false
