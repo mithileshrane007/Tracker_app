@@ -308,8 +308,10 @@ class Api::V1::TargetsController < ApplicationController
 	        is_stop = params[:is_stop]
 	        data1 ={}
 
-		    if target && date.present? && time.present?        	
-		        if not is_start.blank? && is_start
+		    if target and date.present? and time.present?        	
+		        if is_start == "true"
+		        	puts is_start
+		        	puts "=========="
 		        	puts "Start"
 		            log = DayLog.find_by_target_id_and_date(target,date)                    
 		            puts log
@@ -340,7 +342,7 @@ class Api::V1::TargetsController < ApplicationController
 		                data1['date'] = log.date
 		                data1['msg'] = 'success'
 		            end
-		        elsif not is_stop.blank? && is_stop
+		        elsif is_stop == "true"
 		        		puts "Stop if"               	
 		                log = DayLog.find_by_target_id_and_date(target,date)
 		                puts log
@@ -367,8 +369,6 @@ class Api::V1::TargetsController < ApplicationController
 		                data1['date'] = log.date
 		                data1['msg'] = 'success'
 		               
-
-		        
 		        else
 		        	puts "else"
 		        	data1['error'] = 'true'
