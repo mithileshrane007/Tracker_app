@@ -310,9 +310,11 @@ class Api::V1::TargetsController < ApplicationController
 
 		    if target && date.present? && time.present?        	
 		        if not is_start.blank? && is_start
+		        	puts "Start"
 		            log = DayLog.find_by_target_id_and_date(target,date)                    
 		            puts log
 		            if log.blank?
+		            	puts "Start if"
 		                hour= DayLog.new(target_id: target,date: date,prev_time: time)
 		                hour.log_hour = "00.00"
 		                hour.save
