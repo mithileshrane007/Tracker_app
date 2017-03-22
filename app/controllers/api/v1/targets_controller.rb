@@ -310,13 +310,13 @@ class Api::V1::TargetsController < ApplicationController
 
 		    if target and date.present? and time.present?        	
 		        if is_start == "true"
-		        	puts is_start
-		        	puts "=========="
-		        	puts "Start"
+		        	# puts is_start
+		        	# puts "=========="
+		        	# puts "Start"
 		            log = DayLog.find_by_target_id_and_date(target,date)                    
 		            puts log
 		            if log.blank?
-		            	puts "Start if"
+		            	# puts "Start if"
 		                hour= DayLog.new(target_id: target,date: date,prev_time: time)
 		                hour.log_hour = "00.00"
 		                hour.save
@@ -326,15 +326,15 @@ class Api::V1::TargetsController < ApplicationController
 		                data1['date'] = hour.date
 		                data1['msg'] = 'success'
 		            else
-		            	puts "Start else"
-		                puts "**************************"
+		            	# puts "Start else"
+		                # puts "**************************"
 		                log = DayLog.find_by_target_id_and_date(target,date)                        
-		                puts log
+		                # puts log
 		             
-		                puts log.log_hour
+		                # puts log.log_hour
 		                log.prev_time = time
-		                puts "99999999999999999999999999999999999999"
-		                puts log.prev_time
+		                # puts "99999999999999999999999999999999999999"
+		                # puts log.prev_time
 		                log.save
 		                data1['error'] = 'false'
 		                data1['loggedhour'] = log.log_hour
@@ -343,25 +343,25 @@ class Api::V1::TargetsController < ApplicationController
 		                data1['msg'] = 'success'
 		            end
 		        elsif is_stop == "true"
-		        		puts "Stop if"               	
+		        		# puts "Stop if"               	
 		                log = DayLog.find_by_target_id_and_date(target,date)
-		                puts log
-		                puts Time.parse(log.prev_time)
-		                puts Time.parse(time)
+		                # puts log
+		                # puts Time.parse(log.prev_time)
+		                # puts Time.parse(time)
 		                prev_hr= log.log_hour.split('.').first.to_f * 3600 + log.log_hour.split('.').last.to_f * 60
-					 	puts "prev_hr"
-						puts prev_hr.to_s 
+					 	# puts "prev_hr"
+						# puts prev_hr.to_s 
 
 		                seconds = (prev_hr + ((Time.parse(time) - Time.parse(log.prev_time))).to_f)	               
-						puts "seconds"
-						puts seconds.to_s
-						puts "log.log_hour"
+						# puts "seconds"
+						# puts seconds.to_s
+						# puts "log.log_hour"
 						log.log_hour= Time.at((seconds)).utc.strftime("%H.%M").to_s
 		              
-		                puts log.log_hour
+		                # puts log.log_hour
 		                log.prev_time = time
-		                puts "99999999999999999999999999999999999999"
-		                puts log.prev_time
+		                # puts "99999999999999999999999999999999999999"
+		                # puts log.prev_time
 		                log.save
 		                data1['error'] = 'false'
 		                data1['loggedhour'] = log.log_hour
@@ -370,7 +370,7 @@ class Api::V1::TargetsController < ApplicationController
 		                data1['msg'] = 'success'
 		               
 		        else
-		        	puts "else"
+		        	# puts "else"
 		        	data1['error'] = 'true'
 		       		data1['msg'] = 'unsuccess invalid params.'  
 		        end 
