@@ -322,6 +322,7 @@ class Api::V1::TargetsController < ApplicationController
 		                data1['date'] = hour.date
 		                data1['msg'] = 'success'
 		            else
+		            	puts "Start else"
 		                puts "**************************"
 		                log = DayLog.find_by_target_id_and_date(target,date)                        
 		                puts log
@@ -337,7 +338,8 @@ class Api::V1::TargetsController < ApplicationController
 		                data1['date'] = log.date
 		                data1['msg'] = 'success'
 		            end
-		        elsif not is_stop.blank? && is_stop               	
+		        elsif not is_stop.blank? && is_stop
+		        		puts "Stop if"               	
 		                log = DayLog.find_by_target_id_and_date(target,date)
 		                puts log
 		                puts Time.parse(log.prev_time)
@@ -366,6 +368,7 @@ class Api::V1::TargetsController < ApplicationController
 
 		        
 		        else
+		        	puts "else"
 		        	data1['error'] = 'true'
 		       		data1['msg'] = 'unsuccess invalid params.'  
 		        end 
