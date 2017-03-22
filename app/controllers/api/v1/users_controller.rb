@@ -170,7 +170,7 @@ class Api::V1::UsersController < ApplicationController
 			        puts target_user_id
 
 	             	if start_date.present? && end_date.present?
-	             		date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id)
+	             		date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id).order('date desc')
 	             		puts date_log
 	             		puts "-----------------------"
 	             		puts date_log.inspect
@@ -179,6 +179,7 @@ class Api::V1::UsersController < ApplicationController
 	             			for i in date_log
 	             				puts x+1
 		             			object = {}
+		             			object['date'] = i.date
 		             			object['log_hour'] = i.log_hour
 		             			arrayObj.push(object)		             			
 		             		end
@@ -187,6 +188,7 @@ class Api::V1::UsersController < ApplicationController
 		             	data['msg'] = "Success"
 		             	else
 		             		tempObj={}
+		             		tempObj['date'] = -1
 		             		tempObj['log_hour'] = -1
 		             		arrayObj.push(tempObj)
 		             		puts "-1111111111111111-"

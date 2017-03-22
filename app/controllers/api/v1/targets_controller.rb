@@ -139,6 +139,7 @@ class Api::V1::TargetsController < ApplicationController
 							data1['email'] = i.email
 							data1['track_time_interval'] = i.track_time_interval
 							data1['track_time_out'] = i.track_time_out
+							data1['is_online'] = i.is_online
 	 	    			@target1.push(data1)
 				        x=x+1
 				      	end
