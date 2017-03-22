@@ -296,8 +296,7 @@ class Api::V1::TargetsController < ApplicationController
  	  #   end
  	  
 	  	def log_hour
-	    	
-	        token = request.headers["token"]
+	    	token = request.headers["token"]
 	        targetObj = Target.find_by_auth_token(token)
 	        if targetObj
 	        	target = targetObj.id
