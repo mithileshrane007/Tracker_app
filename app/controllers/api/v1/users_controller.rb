@@ -154,66 +154,121 @@ class Api::V1::UsersController < ApplicationController
 
 
 
-    		def getLogsForSpecificDates
-	 	  		token = request.headers["token"]
-	            user = User.find_by_auth_token(token).id
-	            start_date = params[:start_date]
-	            end_date = params[:end_date]
-	            target = Target.find_by_tracking_id(params[:tracking_id])
-	           
+		def getLogsForSpecificDates
+ 	  		token = request.headers["token"]
+            user = User.find_by_auth_token(token).id
+            start_date = params[:start_date]
+            end_date = params[:end_date]
+            target = Target.find_by_tracking_id(params[:tracking_id])           
 
-	             arrayObj = []
-	             data={}
-	            if  target && user
-	            	target_user_id = target.id
-					puts "-----------+++++++++++++++++++++++--------------"
-			        puts target_user_id
+            arrayObj = []
+            data={}
+            if  target && user
+            	target_user_id = target.id
+				puts "-----------+++++++++++++++++++++++--------------"
+		        puts target_user_id
 
-	             	if start_date.present? && end_date.present?
-	             		date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id).order('date desc')
-	             		puts date_log
-	             		puts "-----------------------"
-	             		puts date_log.inspect
-	             		if date_log.count>0
-	             			x = 0
-	             			for i in date_log
-	             				puts x+1
-		             			object = {}
-		             			object['date'] = i.date
-		             			object['log_hour'] = i.log_hour
-		             			arrayObj.push(object)		             			
-		             		end
-						data['error'] = false
-		             	data['result'] = arrayObj	
-		             	data['msg'] = "Success"
-		             	else
-		             		tempObj={}
-		             		tempObj['date'] = -1
-		             		tempObj['log_hour'] = -1
-		             		arrayObj.push(tempObj)
-		             		puts "-1111111111111111-"
-	             			data['error'] = false
-	             			data['result'] = arrayObj	             			
-	             			data['msg'] = "No user with logs found."
-		             	end
+             	if start_date.present? && end_date.present?
+             		date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id).order('date desc')
+             		puts date_log
+             		puts "-----------------------"
+             		puts date_log.inspect
+             		if date_log.count>0
+             			x = 0
+             			for i in date_log
+             				puts x+1
+	             			object = {}
+	             			object['date'] = i.date
+	             			object['log_hour'] = i.log_hour
+	             			arrayObj.push(object)		             			
+	             		end
+					data['error'] = false
+	             	data['result'] = arrayObj	
+	             	data['msg'] = "Success"
 	             	else
-	             		data['error']=true
-	             		data['msg']="Parameter invalid or incomplete."	
+	             		tempObj={}
+	             		tempObj['date'] = -1
+	             		tempObj['log_hour'] = -1
+	             		arrayObj.push(tempObj)
+	             		puts "-1111111111111111-"
+             			data['error'] = false
+             			data['result'] = arrayObj	             			
+             			data['msg'] = "No user with logs found."
 	             	end
+             	else
+             		data['error']=true
+             		data['msg']="Parameter invalid or incomplete."	
+             	end
 
-	            else
-	             	data['error']=true
-	             	data['msg']="Invalid Authentication or unauthorized request."
+            else
+             	data['error']=true
+             	data['msg']="Invalid Authentication or unauthorized request."
 
-	            end
+            end
 
 
-             
-				respond_to do |format|
-	      			format.json { render json: data }
-	    		end	
+         
+			respond_to do |format|
+      			format.json { render json: data }
+    		end	
 
- 	  		end
+	  	end
+
+
+
+	  	def logsCoodrinateWithOnlineStatus
+	  		token = request.headers["token"]
+            userObj = User.find_by_auth_token(token)
+            if userObj
+            	user=userObj.id
+            end
+            date = params[:date]
+            target = Target.find_by_tracking_id(params[:tracking_id]) 
+            data = {}
+            arrayObj = []
+            if user && target
+            	target_id = target.id
+            	if date.present?
+            			logs = Log.where("target_id = ? and CAST(created_at AS DATE) = ?",target_id,date)
+            			# puts logs.inspect
+		            	if logs.count > 0
+		            		puts "in if"
+		            		for i in logs
+		            			puts "in for"
+
+			            		object = {}
+			         			object['latitude'] = i.latitude
+			         			object['longitude'] = i.longitude
+			         			date_and_time = '%Y-%m-%d %H:%M:%S %Z'
+								# object['check'] = DateTime.strptime("2017-03-21 07:01:42 Asia/Kolkata",date_and_time).strftime("%I:%M %P")
+			         			# puts TimeZone[i.time_zone].parse(i.created_at).strftime("%I:%M %P").to_s
+			         			# object['time'] = i.created_at.strftime("%I:%M %P")
+			         			object['time'] = i.created_at.localtime.strftime("%I:%M %P")
+			         			arrayObj.push(object)	         			
+		         			end	
+		         			data['error']=false
+			            	data['msg']="Success."
+			            	data['result'] = arrayObj
+		         		else
+		         			data['error']=false
+			            	data['msg']="No logs found for user."
+			            	data['result'] = arrayObj		        
+		            	end
+            	else
+            		data['error']=true
+             		data['msg']="Parameter invalid or incomplete."            		
+            	end                      	
+            	
+            else	
+            	data['error']=true
+             	data['msg']="Invalid Authentication or unauthorized request."
+            end
+
+            respond_to do |format|
+      			format.json { render json: data }
+    		end	
+	  		
+	  	end
 
 end
 

@@ -19,6 +19,8 @@ namespace :api do
             post 'target_session_status', to: 'targets#logout'
             post 'logged_hours', to: 'targets#log_hour'
             post 'getLogswithDate', to: 'users#getLogsForSpecificDates'
+            post 'getLogswithStatus', to: 'users#logsCoodrinateWithOnlineStatus'
+
             resources :targets
             resources :users
             resources :logs 
