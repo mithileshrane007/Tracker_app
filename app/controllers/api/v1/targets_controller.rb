@@ -324,12 +324,12 @@ class Api::V1::TargetsController < ApplicationController
 		            else
 		                puts "**************************"
 		                log = DayLog.find_by_target_id_and_date(target,date)                        
-		                # puts log
+		                puts log
 		             
-		                # puts log.log_hour
+		                puts log.log_hour
 		                log.prev_time = time
-		                # puts "99999999999999999999999999999999999999"
-		                # puts log.prev_time
+		                puts "99999999999999999999999999999999999999"
+		                puts log.prev_time
 		                log.save
 		                data1['error'] = 'false'
 		                data1['loggedhour'] = log.log_hour
@@ -339,23 +339,23 @@ class Api::V1::TargetsController < ApplicationController
 		            end
 		        elsif not is_stop.blank? && is_stop               	
 		                log = DayLog.find_by_target_id_and_date(target,date)
-		                # puts log
-		                # puts Time.parse(log.prev_time)
-		                # puts Time.parse(time)
+		                puts log
+		                puts Time.parse(log.prev_time)
+		                puts Time.parse(time)
 		                prev_hr= log.log_hour.split('.').first.to_f * 3600 + log.log_hour.split('.').last.to_f * 60
-					 	# puts "prev_hr"
-						# puts prev_hr.to_s 
+					 	puts "prev_hr"
+						puts prev_hr.to_s 
 
 		                seconds = (prev_hr + ((Time.parse(time) - Time.parse(log.prev_time))).to_f)	               
-						# puts "seconds"
-						# puts seconds.to_s
-						# puts "log.log_hour"
+						puts "seconds"
+						puts seconds.to_s
+						puts "log.log_hour"
 						log.log_hour= Time.at((seconds)).utc.strftime("%H.%M").to_s
 		              
-		                # puts log.log_hour
+		                puts log.log_hour
 		                log.prev_time = time
-		                # puts "99999999999999999999999999999999999999"
-		                # puts log.prev_time
+		                puts "99999999999999999999999999999999999999"
+		                puts log.prev_time
 		                log.save
 		                data1['error'] = 'false'
 		                data1['loggedhour'] = log.log_hour
