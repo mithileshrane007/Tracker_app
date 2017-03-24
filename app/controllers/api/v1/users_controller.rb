@@ -181,7 +181,7 @@ class Api::V1::UsersController < ApplicationController
 							puts "#{key} =::> #{val}" 
 							object = {}
 							object['date'] = key
-							result = val.to_s.rjust(6,'0')
+							result = val.to_i.to_s.rjust(6,'0')
 							result = result.scan(/.{2}/)
 							puts result
 							object['log_hour'] = result[0] + ":" + result[1] +":" + result[2]
