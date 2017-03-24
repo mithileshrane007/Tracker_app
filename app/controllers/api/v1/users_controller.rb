@@ -170,7 +170,7 @@ class Api::V1::UsersController < ApplicationController
 
              	if start_date.present? && end_date.present?
 
-	    			date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id).order('date asc').group("date").sum(:log_hour)
+	    			date_log = DayLog.where("date >= ? AND date <=? and target_id = ?",start_date,end_date,target_user_id).order('date asc').group("date").sum(:log_hour)
 	    			puts "-----------+++++++++++++++++++++++--------------"
 	    			puts "date_log"
 	    			puts date_log.inspect
