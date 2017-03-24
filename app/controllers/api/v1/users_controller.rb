@@ -193,7 +193,6 @@ class Api::V1::UsersController < ApplicationController
 	    			else	
 	    				data['error'] = false
              			data['result'] = arrayObj
-             			data['mine'] = "sasbvg"	             			
              			data['msg'] = "No logs found."	
 	    			end
 	             	# puts date_log.inspect
