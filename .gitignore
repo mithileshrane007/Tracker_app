@@ -3,6 +3,10 @@ capybara-*.html
 .rspec
 /log
 /tmp
+<<<<<<< HEAD
+=======
+/config/database.yml
+>>>>>>> 490b61be5425b93bfcb2b7966928ad4de422d7f3
 /db/*.sqlite3
 /db/*.sqlite3-journal
 /public/system

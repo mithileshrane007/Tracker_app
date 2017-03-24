@@ -167,6 +167,10 @@ class Api::V1::UsersController < ApplicationController
             	target_user_id = target.id
 				puts "-----------+++++++++++++++++++++++--------------"
 		        puts target_user_id
+<<<<<<< HEAD
+=======
+
+>>>>>>> 490b61be5425b93bfcb2b7966928ad4de422d7f3
              	if start_date.present? && end_date.present?
              		date_log = DayLog.where("date >= ? AND date <= ? and target_id = ?",start_date,end_date,target_user_id).order('date asc')
              		puts date_log
