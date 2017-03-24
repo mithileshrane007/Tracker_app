@@ -171,8 +171,12 @@ class Api::V1::UsersController < ApplicationController
              	if start_date.present? && end_date.present?
 
 	    			date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id).order('date asc').group("date").sum(:log_hour)
+	    			puts "-----------+++++++++++++++++++++++--------------"
+	    			puts "date_log"
+	    			puts date_log.inspect
+	    			puts "-----------+++++++++++++++++++++++--------------"
 
-	    			if date_log.length > 0
+	    			if date_log.count > 0
 	    				date_log.each do |key, val|
 							puts "#{key} =::> #{val}" 
 							object = {}
@@ -182,39 +186,19 @@ class Api::V1::UsersController < ApplicationController
 							object['log_hour'] = result[0] + ":" + result[1] +":" + result[2]
 							arrayObj.push(object)
 						end
+						puts arrayObj.count
 	    				data['error'] = false
 		             	data['result'] = arrayObj	
 		             	data['msg'] = "Success"		    					
 	    			else	
 	    				data['error'] = false
-             			data['result'] = arrayObj	             			
+             			data['result'] = arrayObj
+             			data['mine'] = "sasbvg"	             			
              			data['msg'] = "No logs found."	
 	    			end
 	             	# puts date_log.inspect
 
-             		date_log = DayLog.where("date >= ? AND date <= ? and target_id = ?",start_date,end_date,target_user_id).order('date asc')
-             		puts date_log
-             		puts "-----------------------"
-             		puts date_log.inspect
-             		if date_log.count>0
-             			x = 0
-             			for i in date_log
-             				puts x+1
-	             			object = {}
-	             			object['date'] = i.date
-	             			object['log_hour'] = i.log_hour
-	             			arrayObj.push(object)		             			
-	             		end
-					data['error'] = false
-	             	data['result'] = arrayObj	
-	             	data['msg'] = "Success"
-	             	else
-	             		
-	             		puts "-1111111111111111-"
-             			data['error'] = false
-             			data['result'] = arrayObj	             			
-             			data['msg'] = "No logs found."
-	             	end
+             	
              	else
              		data['error']=true
              		data['msg']="Parameter invalid or incomplete."	

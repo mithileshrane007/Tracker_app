@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170321074400) do
+ActiveRecord::Schema.define(version: 20170323142526) do
 
   create_table "checkouts", force: :cascade do |t|
     t.integer  "target_id",   limit: 4
@@ -22,10 +22,12 @@ ActiveRecord::Schema.define(version: 20170321074400) do
   end
 
   create_table "day_logs", force: :cascade do |t|
-    t.integer "target_id", limit: 4
-    t.string  "date",      limit: 255
-    t.string  "prev_time", limit: 255
-    t.string  "log_hour",  limit: 255
+    t.integer "target_id",  limit: 4
+    t.date    "date"
+    t.time    "end_time"
+    t.time    "log_hour"
+    t.time    "start_time"
+    t.string  "time_zone",  limit: 255
   end
 
   create_table "logs", force: :cascade do |t|
