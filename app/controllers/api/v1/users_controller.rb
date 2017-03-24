@@ -193,7 +193,7 @@ class Api::V1::UsersController < ApplicationController
 	             		puts "-1111111111111111-"
              			data['error'] = false
              			data['result'] = arrayObj	             			
-             			data['msg'] = "No user with logs found."
+             			data['msg'] = "No logs found."
 	             	end
              	else
              		data['error']=true
