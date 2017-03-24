@@ -295,8 +295,8 @@ class Api::V1::TargetsController < ApplicationController
 
  	  #   end
  	  
-	  	def log_hour
-	    	token = request.headers["token"]
+	  	  	def log_hour
+	  		token = request.headers["token"]
 	        targetObj = Target.find_by_auth_token(token)
 	        if targetObj
 	        	target = targetObj.id
@@ -306,90 +306,73 @@ class Api::V1::TargetsController < ApplicationController
 	        target_id = params[:target_id]
 	        is_start = params[:is_start]
 	        is_stop = params[:is_stop]
-	        data1 ={}
+	        time_zone = params[:time_zone]
 
-		    if target and date.present? and time.present?        	
-		        if is_start == "true"
-		        	# puts is_start
-		        	# puts "=========="
-		        	# puts "Start"
-		            log = DayLog.find_by_target_id_and_date(target,date)                    
-		            puts log
-		            if log.blank?
-		            	# puts "Start if"
-		                hour= DayLog.new(target_id: target,date: date,prev_time: time)
-		                hour.log_hour = "00.00"
-		                hour.save
-		                data1['error'] = 'false'
-		                data1['loggedhour'] = hour.log_hour
-		                data1['prev_time'] = hour.prev_time
-		                data1['date'] = hour.date
-		                data1['msg'] = 'success'
-		            else
-		            	# puts "Start else"
-		                # puts "**************************"
-<<<<<<< HEAD
-		                log = DayLog.find_by_target_id_and_date(target,date) 
-		                # puts log
-=======
-		                log = DayLog.find_by_target_id_and_date(target,date)                        
-		                # puts log
-		             
->>>>>>> 490b61be5425b93bfcb2b7966928ad4de422d7f3
-		                # puts log.log_hour
-		                log.prev_time = time
-		                # puts "99999999999999999999999999999999999999"
-		                # puts log.prev_time
-		                log.save
-		                data1['error'] = 'false'
-		                data1['loggedhour'] = log.log_hour
-		                data1['prev_time'] = log.prev_time
-		                data1['date'] = log.date
-		                data1['msg'] = 'success'
-		            end
-		        elsif is_stop == "true"
-		        		# puts "Stop if"               	
-		                log = DayLog.find_by_target_id_and_date(target,date)
-		                # puts log
-		                # puts Time.parse(log.prev_time)
-		                # puts Time.parse(time)
-		                prev_hr= log.log_hour.split('.').first.to_f * 3600 + log.log_hour.split('.').last.to_f * 60
-					 	# puts "prev_hr"
-						# puts prev_hr.to_s 
+	        data = {}
+	  		
+	  		if target and date.present? and time.present?  and time_zone.present?
+	  			if is_start == "true"
+	  				daylog = DayLog.find_by_target_id_and_date(target,date)
+	  				puts daylog.inspect
 
-		                seconds = (prev_hr + ((Time.parse(time) - Time.parse(log.prev_time))).to_f)	               
-						# puts "seconds"
-						# puts seconds.to_s
-						# puts "log.log_hour"
-						log.log_hour= Time.at((seconds)).utc.strftime("%H.%M").to_s
-		              
-		                # puts log.log_hour
-		                log.prev_time = time
-		                # puts "99999999999999999999999999999999999999"
-		                # puts log.prev_time
-		                log.save
-		                data1['error'] = 'false'
-		                data1['loggedhour'] = log.log_hour
-		                data1['prev_time'] = log.prev_time
-		                data1['date'] = log.date
-		                data1['msg'] = 'success'
-		               
-		        else
-		        	# puts "else"
-		        	data1['error'] = 'true'
-		       		data1['msg'] = 'unsuccess invalid params.'  
-		        end 
-		  	else
-		    	data1['error'] = 'true'
-		   		data1['msg'] = 'unsuccess unauthorized request.'  
-		  	end
-		   	
-		    	    
-		    respond_to do |format|
-		        format.json { render json: data1 }
-		    end
+	  				if daylog.blank?
+	  					daylog= DayLog.new(target_id: target,date: date,start_time: time,time_zone: time_zone)
+	  					daylog.save
+	  					# puts daylog.inspect
+	  					data['error'] = false
+	  					data['loggedhour'] = daylog.log_hour
+	  					data['msg'] = 'success'
+	  				else
+	  					daylog= DayLog.new(target_id: target,date: date,start_time: time,time_zone: time_zone)
+
+	  					daylog.save
+	  					 
+	  					puts daylog.inspect	
+	  					data['error'] = false
+	  					data['loggedhour'] = daylog.log_hour
+	  					data['msg'] = 'success'
+
+ 					
+	  				end  				
+	  			elsif is_stop == "true"
+	  				logs = DayLog.where("target_id = ? and date = ?",target,date).order('start_time desc')
+	  				
+		            log = logs.first
+		            # puts "before"
+		            # puts log.inspect
+		            log.end_time = time		 	            
+		            log.save		           
+		            logs = DayLog.where("target_id = ? and date = ?",target,date).order('start_time desc')
+		            log = logs.first
+		            # puts "middle"
+		            # puts log.inspect
+		            seconds = (log.end_time - log.start_time).to_i
+		            # puts "seconds"
+		            # puts seconds
+		            # seconds = 1200
+		            actual_val = [seconds / 3600, seconds / 60 % 60, seconds % 60].map { |t| t.to_s.rjust(2,'0') }.join(':')
+		            # puts "actual_val"
+		            # puts actual_val
+		            log.log_hour = actual_val
+		            log.save
+					# puts "aft/er"
+		            # puts log.inspect
+		            data['error'] = false
+	                data['loggedhour'] = log.log_hour.strftime("%H:%M:%S")
+	  				data['msg'] = 'success'
+	  			else
+	  				data['error'] = 'true'
+		   			data['msg'] = 'Unsuccess invalid params.'				
+	  			end
+	  		else	
+	  			data['error'] = 'true'
+		   		data['msg'] = 'unsuccess unauthorized request.'  
+	  		end
+
+			respond_to do |format|
+				format.json { render json: data }
+			end
 
 	  	end
-
    
 end

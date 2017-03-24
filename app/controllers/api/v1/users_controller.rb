@@ -167,11 +167,31 @@ class Api::V1::UsersController < ApplicationController
             	target_user_id = target.id
 				puts "-----------+++++++++++++++++++++++--------------"
 		        puts target_user_id
-<<<<<<< HEAD
-=======
 
->>>>>>> 490b61be5425b93bfcb2b7966928ad4de422d7f3
              	if start_date.present? && end_date.present?
+
+	    			date_log = DayLog.where("date >= ? AND date < ? and target_id = ?",start_date,end_date,target_user_id).order('date asc').group("date").sum(:log_hour)
+
+	    			if date_log.length > 0
+	    				date_log.each do |key, val|
+							puts "#{key} =::> #{val}" 
+							object = {}
+							object['date'] = key
+							result = val.to_s.rjust(6,'0')
+							result = result.scan(/.{2}/)
+							object['log_hour'] = result[0] + ":" + result[1] +":" + result[2]
+							arrayObj.push(object)
+						end
+	    				data['error'] = false
+		             	data['result'] = arrayObj	
+		             	data['msg'] = "Success"		    					
+	    			else	
+	    				data['error'] = false
+             			data['result'] = arrayObj	             			
+             			data['msg'] = "No logs found."	
+	    			end
+	             	# puts date_log.inspect
+
              		date_log = DayLog.where("date >= ? AND date <= ? and target_id = ?",start_date,end_date,target_user_id).order('date asc')
              		puts date_log
              		puts "-----------------------"
@@ -189,10 +209,7 @@ class Api::V1::UsersController < ApplicationController
 	             	data['result'] = arrayObj	
 	             	data['msg'] = "Success"
 	             	else
-	             		# tempObj={}
-	             		# tempObj['date'] = -1
-	             		# tempObj['log_hour'] = -1
-	             		# arrayObj.push(tempObj)
+	             		
 	             		puts "-1111111111111111-"
              			data['error'] = false
              			data['result'] = arrayObj	             			
@@ -209,8 +226,7 @@ class Api::V1::UsersController < ApplicationController
 
             end
 
-
-         
+        
 			respond_to do |format|
       			format.json { render json: data }
     		end	
