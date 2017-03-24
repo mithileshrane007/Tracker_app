@@ -183,6 +183,7 @@ class Api::V1::UsersController < ApplicationController
 							object['date'] = key
 							result = val.to_s.rjust(6,'0')
 							result = result.scan(/.{2}/)
+							puts result
 							object['log_hour'] = result[0] + ":" + result[1] +":" + result[2]
 							arrayObj.push(object)
 						end

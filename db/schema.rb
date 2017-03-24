@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170323142526) do
+ActiveRecord::Schema.define(version: 20170324132505) do
 
   create_table "checkouts", force: :cascade do |t|
     t.integer  "target_id",   limit: 4
