@@ -1,53 +1,53 @@
 class Api::V1::TargetsController < ApplicationController
 
-	def create
-		begin
-			token = request.headers["token"]
-	        user = User.find_by_auth_token(token).id
-	        puts "**********9999999999999********************"
-	        puts user
-			first_name = params[:first_name]
-	     	last_name = params[:last_name]
-	     	phone_no = params[:phone_no]
-	     	email = params[:email]
-	     	track_time_interval = params[:track_time_interval]
-	     	track_time_out = params[:track_time_out]
-	     	random =rand.to_s[2..9]
+		def create
+			begin
+				token = request.headers["token"]
+		        user = User.find_by_auth_token(token).id
+		        puts "**********9999999999999********************"
+		        puts user
+				first_name = params[:first_name]
+		     	last_name = params[:last_name]
+		     	phone_no = params[:phone_no]
+		     	email = params[:email]
+		     	track_time_interval = params[:track_time_interval]
+		     	track_time_out = params[:track_time_out]
+		     	random =rand.to_s[2..9]
 
-	     	data ={}
-	     	if first_name.present? && last_name.present?  && phone_no.present? && email.present?
-	     		target = Target.new(first_name: first_name, last_name: last_name, phone_no: phone_no,email: email,tracking_id: random,user_id: user,track_time_interval: track_time_interval,track_time_out: track_time_out)
-	     		    
- 		    	if not params[:image].blank?
-				  StringIO.open(Base64.decode64(params[:image])) do |data|
-                    data.class.class_eval { attr_accessor :original_filename, :content_type }
-                    data.original_filename = "file.jpg"
-                    data.content_type = "image/jpeg"
-                    target.image = data
-                  end
-                end
-                
-                target.save
-                # UserMailer.welcome_email(email, random).deliver_now
-              	data ={}
-				data['error'] = 'false'
-		        data['msg'] = 'success'
+		     	data ={}
+		     	if first_name.present? && last_name.present?  && phone_no.present? && email.present?
+		     		target = Target.new(first_name: first_name, last_name: last_name, phone_no: phone_no,email: email,tracking_id: random,user_id: user,track_time_interval: track_time_interval,track_time_out: track_time_out)
+		     		    
+	 		    	if not params[:image].blank?
+					  StringIO.open(Base64.decode64(params[:image])) do |data|
+	                    data.class.class_eval { attr_accessor :original_filename, :content_type }
+	                    data.original_filename = "file.jpg"
+	                    data.content_type = "image/jpeg"
+	                    target.image = data
+	                  end
+	                end
+	                
+	                target.save
+	                # UserMailer.welcome_email(email, random).deliver_now
+	              	data ={}
+					data['error'] = 'false'
+			        data['msg'] = 'success'
 
-	        else
-	        	data ={}
-	       		data['error'] = 'true'
-		       	data['msg'] = 'Entry unsuccessful.Blank Params.'
-		    end
-		rescue Exception => e
-			data ={}
-			    data['error'] = 'true'
-		       	data['msg'] = 'Authentication Failure'
-		end
-	     	
-                	respond_to do |format|
-                		format.json { render json: data }
-                	end
-    end
+		        else
+		        	data ={}
+		       		data['error'] = 'true'
+			       	data['msg'] = 'Entry unsuccessful.Blank Params.'
+			    end
+			rescue Exception => e
+				data ={}
+				    data['error'] = 'true'
+			       	data['msg'] = 'Authentication Failure'
+			end
+		     	
+	                	respond_to do |format|
+	                		format.json { render json: data }
+	                	end
+	    end
 
         def update
     		begin
@@ -249,47 +249,46 @@ class Api::V1::TargetsController < ApplicationController
 
  	  
   	  	def log_hour
-  		token = request.headers["token"]
-        targetObj = Target.find_by_auth_token(token)
-        if targetObj
-        	target = targetObj.id
-        end	
-        date = params[:date]
-        time = params[:time]
-        target_id = params[:target_id]
-        is_start = params[:is_start]
-        is_stop = params[:is_stop]
-        time_zone = params[:time_zone]
+			token = request.headers["token"]
+		    targetObj = Target.find_by_auth_token(token)
+		    if targetObj
+		    	target = targetObj.id
+		    end	
+		    date = params[:date]
+		    time = params[:time]
+		    target_id = params[:target_id]
+		    is_start = params[:is_start]
+		    is_stop = params[:is_stop]
+		    time_zone = params[:time_zone]
 
-        data = {}
-  		
-  		if target and date.present? and time.present?  and time_zone.present?
-  			if is_start == "true"
-  				daylog = DayLog.find_by_target_id_and_date(target,date)
-  				puts daylog.inspect
+		    data = {}
+				
+			if target and date.present? and time.present?  and time_zone.present?
+				if is_start == "true"
+					daylog = DayLog.find_by_target_id_and_date(target,date)
+					puts daylog.inspect
 
-  				if daylog.blank?
-  					daylog= DayLog.new(target_id: target,date: date,start_time: time,time_zone: time_zone)
-  					daylog.save
-  					# puts daylog.inspect
-  					data['error'] = false
-  					data['loggedhour'] = daylog.log_hour
-  					data['msg'] = 'success'
-  				else
-  					daylog= DayLog.new(target_id: target,date: date,start_time: time,time_zone: time_zone)
+					if daylog.blank?
+						daylog= DayLog.new(target_id: target,date: date,start_time: time,time_zone: time_zone)
+						daylog.save
+						# puts daylog.inspect
+						data['error'] = false
+						data['loggedhour'] = daylog.log_hour
+						data['msg'] = 'success'
+					else
+						daylog= DayLog.new(target_id: target,date: date,start_time: time,time_zone: time_zone)
 
-  					daylog.save
-  					 
-  					puts daylog.inspect	
-  					data['error'] = false
-  					data['loggedhour'] = daylog.log_hour
-  					data['msg'] = 'success'
+						daylog.save
+						 
+						puts daylog.inspect	
+						data['error'] = false
+						data['loggedhour'] = daylog.log_hour
+						data['msg'] = 'success'				
+					end  				
 
+				elsif is_stop == "true"
+					logs = DayLog.where("target_id = ? and date = ?",target,date).order('start_time desc')
 					
-  				end  				
-  			elsif is_stop == "true"
-  				logs = DayLog.where("target_id = ? and date = ?",target,date).order('start_time desc')
-  				
 	            log = logs.first
 	            # puts "before"
 	            # puts log.inspect
@@ -311,21 +310,23 @@ class Api::V1::TargetsController < ApplicationController
 				# puts "aft/er"
 	            # puts log.inspect
 	            data['error'] = false
-                data['loggedhour'] = log.log_hour.strftime("%H:%M:%S")
-  				data['msg'] = 'success'
-  			else
-  				data['error'] = 'true'
+	            data['loggedhour'] = log.log_hour.strftime("%H:%M:%S")
+					data['msg'] = 'success'
+				else
+					data['error'] = 'true'
 	   			data['msg'] = 'Unsuccess invalid params.'				
-  			end
-  		else	
-  			data['error'] = 'true'
+				end
+
+			else	
+			
+			data['error'] = 'true'
 	   		data['msg'] = 'unsuccess unauthorized request.'  
-  		end
+			
+			end
 
-		respond_to do |format|
-			format.json { render json: data }
+			respond_to do |format|
+				format.json { render json: data }
+			end
 		end
-
-  	end
 
 end
