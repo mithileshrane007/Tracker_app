@@ -329,9 +329,8 @@ class Api::V1::TargetsController < ApplicationController
 		            	# puts "Start else"
 		                # puts "**************************"
 		                log = DayLog.find_by_target_id_and_date(target,date) 
-		                                       
+
 		                # puts log
-		             
 		                # puts log.log_hour
 		                log.prev_time = time
 		                # puts "99999999999999999999999999999999999999"
