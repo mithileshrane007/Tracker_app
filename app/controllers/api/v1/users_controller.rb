@@ -186,10 +186,10 @@ class Api::V1::UsersController < ApplicationController
 	             	data['result'] = arrayObj	
 	             	data['msg'] = "Success"
 	             	else
-	             		tempObj={}
-	             		tempObj['date'] = -1
-	             		tempObj['log_hour'] = -1
-	             		arrayObj.push(tempObj)
+	             		# tempObj={}
+	             		# tempObj['date'] = -1
+	             		# tempObj['log_hour'] = -1
+	             		# arrayObj.push(tempObj)
 	             		puts "-1111111111111111-"
              			data['error'] = false
              			data['result'] = arrayObj	             			
